@@ -3,6 +3,10 @@
 
 This is the GitHub repository for SimpleToolHub, a collection of simple tools for developers and more.
 
+Check it online at [https://simpletoolhub.site](https://simpletoolhub.site).
+
+Do you have an idea for a tool? Write to us.
+
 ## Tools
 
 - Byte Converter: Convert between bytes, kilobytes, megabytes, and gigabytes etc

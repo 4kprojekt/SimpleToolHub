@@ -84,11 +84,23 @@
 
     function minify() {
 
-        var json = document.getElementById("json").value;
+        try {
 
-        var minifiedJson = JSON.stringify(JSON.parse(json));
+            //clear minified json
+            document.getElementById("minifiedJson").value = "";
 
-        document.getElementById("minifiedJson").value = minifiedJson;
+            var json = document.getElementById("json").value;
+
+            var minifiedJson = JSON.stringify(JSON.parse(json));
+
+            document.getElementById("minifiedJson").value = minifiedJson;
+
+        } catch (e) {
+
+            showToast("Invalid JSON");
+
+        }
+
 
     }
 
