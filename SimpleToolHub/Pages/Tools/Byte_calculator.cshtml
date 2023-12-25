@@ -1,0 +1,207 @@
+﻿@page
+@model SimpleToolHub.Pages.Tools.Byte_calculatorModel
+@{
+    ViewData["Title"] = "Byte calculator";
+    ViewData["Description"] = "Converts bytes to other units of measurement.";
+    ViewData["Keywords"] = "byte calculator, bytes, kilobytes, megabytes, gigabytes, terabytes, petabytes, exabytes, zettabytes, yottabytes";
+    ViewData["Icon"] = "/icons/bytecalc.jpg";
+}
+
+<div class="col-12">
+    <div class="card">
+
+
+        <div class="card-body">
+
+            @*card title with icon on lef side. icon size is 128px*@
+            <h2 class="card-title">
+                <img src="@ViewData["Icon"]" class="card-img-top" alt="@ViewData["Title"]" style="width: 128px; height: 128px;">
+                @ViewData["Title"]
+            </h2>
+
+            <p>Converts bytes to other units of measurement.</p>
+            <p>Change any value</p>
+
+            <div class="form-group p-2">
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Bytes:</label>
+                    <input type="number" class="form-control" id="bytes" value="0" onchange="convertBytes()">
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Kilobytes:</label>
+                    <input type="number" class="form-control" id="kilobytes" value="0" onchange="convertKilobytes()">
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Megabytes:</label>
+                    <input type="number" class="form-control" id="megabytes" value="0">
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Gigabytes:</label>
+                    <input type="number" class="form-control" id="gigabytes" value="0">
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Terabytes:</label>
+                    <input type="number" class="form-control" id="terabytes" value="0">
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Petabytes:</label>
+                    <input type="number" class="form-control" id="petabytes" value="0">
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Exabytes:</label>
+                    <input type="number" class="form-control" id="exabytes" value="0">
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Zettabytes:</label>
+                    <input type="number" class="form-control" id="zettabytes" value="0">
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Yottabytes:</label>
+                    <input type="number" class="form-control" id="yottabytes" value="0">
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    function performConversion(sourceId, values) {
+        const sourceValue = parseFloat(document.getElementById(sourceId).value);
+
+        for (const [targetId, factor] of values) {
+            document.getElementById(targetId).value = sourceValue * factor;
+        }
+    }
+
+    function setupConversion(sourceId, values) {
+        document.getElementById(sourceId).addEventListener('input', function () {
+            performConversion(sourceId, values);
+        });
+    }
+
+    // Define conversion factors
+    const CONVERSION_FACTORS = {
+        bytes: [
+            ["kilobytes", 1 / 1024],
+            ["megabytes", 1 / (1024 * 1024)],
+            ["gigabytes", 1 / (1024 * 1024 * 1024)],
+            ["terabytes", 1 / (1024 * 1024 * 1024 * 1024)],
+            ["petabytes", 1 / (1024 * 1024 * 1024 * 1024 * 1024)],
+            ["exabytes", 1 / (1024 * 1024 * 1024 * 1024 * 1024 * 1024)],
+            ["zettabytes", 1 / (1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024)],
+            ["yottabytes", 1 / (1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024)]
+        ],
+        kilobytes: [
+            ["bytes", 1024],
+            ["megabytes", 1 / 1024],
+            ["gigabytes", 1 / (1024 * 1024)],
+            ["terabytes", 1 / (1024 * 1024 * 1024)],
+            ["petabytes", 1 / (1024 * 1024 * 1024 * 1024)],
+            ["exabytes", 1 / (1024 * 1024 * 1024 * 1024 * 1024)],
+            ["zettabytes", 1 / (1024 * 1024 * 1024 * 1024 * 1024 * 1024)],
+            ["yottabytes", 1 / (1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024)]
+        ],
+        megabytes: [
+            ["bytes", 1024 * 1024],
+            ["kilobytes", 1024],
+            ["gigabytes", 1 / 1024],
+            ["terabytes", 1 / (1024 * 1024)],
+            ["petabytes", 1 / (1024 * 1024 * 1024)],
+            ["exabytes", 1 / (1024 * 1024 * 1024 * 1024)],
+            ["zettabytes", 1 / (1024 * 1024 * 1024 * 1024 * 1024)],
+            ["yottabytes", 1 / (1024 * 1024 * 1024 * 1024 * 1024 * 1024)]
+
+        ],
+        gigabytes: [
+            ["bytes", 1024 * 1024 * 1024],
+            ["kilobytes", 1024 * 1024],
+            ["megabytes", 1024],
+            ["terabytes", 1 / 1024],
+            ["petabytes", 1 / (1024 * 1024)],
+            ["exabytes", 1 / (1024 * 1024 * 1024)],
+            ["zettabytes", 1 / (1024 * 1024 * 1024 * 1024)],
+            ["yottabytes", 1 / (1024 * 1024 * 1024 * 1024 * 1024)]
+
+        ],
+        terabytes: [
+            ["bytes", 1024 * 1024 * 1024 * 1024],
+            ["kilobytes", 1024 * 1024 * 1024],
+            ["megabytes", 1024 * 1024],
+            ["gigabytes", 1024],
+            ["petabytes", 1 / 1024],
+            ["exabytes", 1 / (1024 * 1024)],
+            ["zettabytes", 1 / (1024 * 1024 * 1024)],
+            ["yottabytes", 1 / (1024 * 1024 * 1024 * 1024)]
+
+        ],
+        petabytes: [
+            ["bytes", 1024 * 1024 * 1024 * 1024 * 1024],
+            ["kilobytes", 1024 * 1024 * 1024 * 1024],
+            ["megabytes", 1024 * 1024 * 1024],
+            ["gigabytes", 1024 * 1024],
+            ["terabytes", 1024],
+            ["exabytes", 1 / 1024],
+            ["zettabytes", 1 / (1024 * 1024)],
+            ["yottabytes", 1 / (1024 * 1024 * 1024)]
+
+        ],
+        exabytes: [
+            ["bytes", 1024 * 1024 * 1024 * 1024 * 1024 * 1024],
+            ["kilobytes", 1024 * 1024 * 1024 * 1024 * 1024],
+            ["megabytes", 1024 * 1024 * 1024 * 1024],
+            ["gigabytes", 1024 * 1024 * 1024],
+            ["terabytes", 1024 * 1024],
+            ["petabytes", 1024],
+            ["zettabytes", 1 / 1024],
+            ["yottabytes", 1 / (1024 * 1024)]
+
+        ],
+        zettabytes: [
+            ["bytes", 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024],
+            ["kilobytes", 1024 * 1024 * 1024 * 1024 * 1024 * 1024],
+            ["megabytes", 1024 * 1024 * 1024 * 1024 * 1024],
+            ["gigabytes", 1024 * 1024 * 1024 * 1024],
+            ["terabytes", 1024 * 1024 * 1024],
+            ["petabytes", 1024 * 1024],
+            ["exabytes", 1024],
+            ["yottabytes", 1 / 1024]
+
+        ],
+        yottabytes: [
+            ["bytes", 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024],
+            ["kilobytes", 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024],
+            ["megabytes", 1024 * 1024 * 1024 * 1024 * 1024 * 1024],
+            ["gigabytes", 1024 * 1024 * 1024 * 1024 * 1024],
+            ["terabytes", 1024 * 1024 * 1024 * 1024],
+            ["petabytes", 1024 * 1024 * 1024],
+            ["exabytes", 1024 * 1024],
+            ["zettabytes", 1024]
+
+        ]
+    };
+
+    // Set up event listeners for each conversion
+    for (const [source, targets] of Object.entries(CONVERSION_FACTORS)) {
+        setupConversion(source, targets);
+    }
+
+    // If you want to call a function when the page loads to initialize
+    document.addEventListener('DOMContentLoaded', function () {
+        for (const [source, targets] of Object.entries(CONVERSION_FACTORS)) {
+            performConversion(source, targets);
+        }
+    });
+</script>

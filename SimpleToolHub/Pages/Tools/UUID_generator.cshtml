@@ -1,0 +1,99 @@
+﻿@page
+@model SimpleToolHub.Pages.Tools.UUID_generatorModel
+@{
+    ViewData["Title"] = "UUID generator online";
+    ViewData["Description"] = "Generate UUID online.";
+    ViewData["Keywords"] = "uuid generator, uuid, guid, globally unique identifier, universally unique identifier";
+    ViewData["Icon"] = "/icons/uuid.jpg";
+}
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+
+            @*card title with icon on lef side. icon size is 128px*@
+            <h2 class="card-title">
+                <img src="@ViewData["Icon"]" class="card-img-top" alt="@ViewData["Title"]" style="width: 128px; height: 128px;">
+                @ViewData["Title"]
+            </h2>
+            <h3>Generate UUID online</h3>
+
+            <p>UUID v4 (Universally Unique IDentifier) is a 128-bit integer number used to identify resources. The term GUID is generally used by developers working with Microsoft technologies, while UUID is used everywhere else.</p>
+
+            <div class="form-group p-2">
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Number of UUIDs:</label>
+                    <input type="number" class="form-control" id="uuidCount" value="10">
+                </div>
+                <div class="g-col-12 col-xs-6 p-2">
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="generateUuid()">Generate UUIDs</button>
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="generateUuidAndCopyToClipboard()">Generate UUID and copy to clipboard</button>
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="copyToClipboard()">Copy to Clipboard</button>
+                </div>
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">UUIDs:</label>
+                    <textarea id="uuids" class="form-control" rows="12"></textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@await Html.PartialAsync("_Toast")
+
+
+<script>
+
+    function generateUuidAndCopyToClipboard() {
+        generateUuid();
+        copyToClipboard();
+    }
+
+    function generateUuid() {
+        var count = document.getElementById("uuidCount").value;
+        var uuids = "";
+        for (var i = 0; i < count; i++) {
+            uuids += uuid() + "\n";
+        }
+        //put uuids in textarea
+        document.getElementById("uuids").value = uuids;
+    }
+
+    function uuid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    function copyToClipboard() {
+        var uuids = document.getElementById("uuids");
+        uuids.select();
+        uuids.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        showTost("Copied to clipboard");
+    }
+
+    function showTost(message) {
+        //show bootstrap toast
+        var toast = document.getElementById("toast");
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast)
+        //set toast message
+        document.getElementById("toast-body").innerHTML = message;
+        //show toast
+        toastBootstrap.show();
+    }
+
+    function generateuuid() {
+        generateUuid();
+        copyToClipboard();
+    }
+
+    //generate 10 uuids on page load
+    document.addEventListener("DOMContentLoaded", function (event) {
+        generateUuid();
+    });
+</script>

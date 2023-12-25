@@ -1,0 +1,121 @@
+﻿@page
+@model SimpleToolHub.Pages.Tools.JSON_BeautifierModel
+@{
+    ViewData["Title"] = "JSON Beautifier";
+    ViewData["Description"] = "JSON Beautifier is a tool that helps to make JSON (JavaScript Object Notation) code more readable by adding indentation, line breaks, and other formatting.";
+    ViewData["Keywords"] = "json beautifier, json, javascript object notation, beautifier, json formatter, json beautify, json beautifier online, json beautifier tool, json beautifier free, json beautifier download, json beautifier github, json beautifier online free, json beautifier online tool, json beautifier online free tool, json beautifier online tool free, json beautifier online free download, json beautifier online free github, json beautifier online free github tool, json beautifier online free github tool download, json beautifier online free github tool download tool, json beautifier online free github tool download tool free, json beautifier online free github tool download tool free online, json beautifier online free github tool download tool free online tool";
+    ViewData["Icon"] = "/icons/jsonbeau.jpg";
+}
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+
+            @*card title with icon on lef side. icon size is 128px*@
+            <h2 class="card-title">
+                <img src="@ViewData["Icon"]" class="card-img-top" alt="@ViewData["Title"]" style="width: 128px; height: 128px;">
+                @ViewData["Title"]
+            </h2>
+            <p>JSON Beautifier is a tool that helps to make JSON (JavaScript Object Notation) code more readable by adding indentation, line breaks, and other formatting.</p>
+            <h3>The conversion is performed in the browser. No data is sent to the server, so you don’t have to worry about your privacy. Check the code on GitHub.</h3>
+
+
+            <div class="form-group p-2">
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">File:</label>
+                    <input type="file" class="form-control" id="fileInput" accept=".json" onchange="uploadFile()">
+                </div>
+
+
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="json">or paste JSON:</label>
+                    <textarea id="json" class="form-control" rows="12"></textarea>
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="beautify()">Beautify</button>
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="copyToClipboard()">Copy to Clipboard</button>
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="download()">Download</button>
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="beautifiedJson">Beautified JSON:</label>
+                    <textarea id="beautifiedJson" class="form-control" rows="12"></textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_Toast")
+
+
+
+
+
+
+
+<script>
+
+    function uploadFile() {
+        var file = document.getElementById("fileInput").files[0];
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById("json").innerHTML = e.target.result;
+        };
+        reader.readAsText(file);
+    }
+
+    function beautify() {
+
+
+        //clear beautified json
+        document.getElementById("beautifiedJson").value = "";
+
+
+        //if json is empty, show toast
+        if (document.getElementById("json").value == "") {
+            showToast("JSON is empty");
+            return;
+        }
+        try {
+            var json = document.getElementById("json").value;
+            var beautifiedJson = JSON.stringify(JSON.parse(json), null, 2);
+            document.getElementById("beautifiedJson").value = beautifiedJson;
+        }
+        catch (e) {
+            showToast("Invalid JSON");
+        }
+
+    }
+
+    function copyToClipboard() {
+        var beautifiedJson = document.getElementById("beautifiedJson").value;
+        navigator.clipboard.writeText(beautifiedJson);
+        showToast("Copied to clipboard");
+    }
+
+    function download() {
+        var beautifiedJson = document.getElementById("beautifiedJson").value;
+        var filename = "beautifiedJson.json";
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(beautifiedJson));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        showToast("Downloaded");
+    }
+
+    function showToast(message) {
+        var toast = document.getElementById("toast");
+        var toastBody = document.getElementById("toast-body");
+        toastBody.innerHTML = message;
+        var toast = new bootstrap.Toast(toast);
+        toast.show();
+    }
+</script>

@@ -1,0 +1,94 @@
+﻿@page
+@model SimpleToolHub.Pages.Tools.GUID_generatorModel
+@{
+
+    ViewData["Title"] = "GUID generator online";
+    ViewData["Description"] = "Generate GUID online.";
+    ViewData["Keywords"] = "guid generator, guid, uuid, globally unique identifier, universally unique identifier";
+    ViewData["Icon"] = "/icons/guid.jpg";
+}
+<div class="col-12">
+    <div class="card">
+
+
+        <div class="card-body">
+
+            @*card title with icon on lef side. icon size is 128px*@
+            <h2 class="card-title">
+                <img src="@ViewData["Icon"]" class="card-img-top" alt="@ViewData["Title"]" style="width: 128px; height: 128px;">
+                @ViewData["Title"]
+            </h2>
+            <h3>Generate GUID online</h3>
+
+            <p>GUID (Globally Unique Identifier) is a 128-bit integer number used to identify resources. The term GUID is generally used by developers working with Microsoft technologies, while UUID is used everywhere else.</p>
+
+            <div class="form-group p-2">
+                <div class="g-col-12 col-xs-6  p-2 ">
+                    <label class="control-label" for="fileInput">Number of GUIDs:</label>
+                    <input type="number" class="form-control" id="guidCount" value="10">
+                </div>
+                <div class="g-col-12 col-xs-6 p-2">
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="generateGuid()">Generate GUIDs</button>
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="generateGuidAndCopyToClipboard()">Generate GUIDs and copy to clipboard</button>
+
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="copyToClipboard()">Copy to Clipboard</button>
+                </div>
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">GUIDs:</label>
+                    <textarea id="guids" class="form-control" rows="12"></textarea>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_Toast")
+
+
+<script>
+
+    function generateGuidAndCopyToClipboard() {
+        generateGuid();
+        copyToClipboard();
+    }
+
+    function generateGuid() {
+        var count = document.getElementById("guidCount").value;
+        var guids = "";
+        for (var i = 0; i < count; i++) {
+            guids += guid() + "\n";
+        }
+        //put guids in textarea
+        document.getElementById("guids").value = guids;
+    }
+
+    function guid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    function copyToClipboard() {
+        var guids = document.getElementById("guids");
+        guids.select();
+        document.execCommand("copy");
+        //show bootstrap toast
+        var toast = document.getElementById("toast");
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast)
+        //set toast message
+        document.getElementById("toast-body").innerHTML = "GUIDs copied to clipboard";
+        toastBootstrap.show();
+
+    }
+
+    //on document ready generate 10 guids via html
+    document.addEventListener("DOMContentLoaded", function (event) {
+        generateGuid();
+    });
+
+
+</script>

@@ -1,0 +1,151 @@
+﻿@page
+@model SimpleToolHub.Pages.Tools.JSON_MinificationModel
+@{
+    ViewData["Title"] = "JSON Minification";
+    ViewData["Description"] = "JSON Minification is a tool that helps to make JSON (JavaScript Object Notation) code more compact by removing whitespace and other unnecessary characters.";
+    ViewData["Keywords"] = "json minification, json, javascript object notation, minification, json minify, json minification online, json minification tool, json minification free, json minification download, json minification github, json minification online free, json minification online tool, json minification online free tool, json minification online tool free, json minification online free download, json minification online free github, json minification online free github tool, json minification online free github tool download, json minification online free github tool download tool, json minification online free github tool download tool free, json minification online free github tool download tool free online, json minification online free github tool download tool free online tool";
+    ViewData["Icon"] = "/icons/jsonmini.jpg";
+}
+
+<h2>@ViewData["Title"]</h2>
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+
+            @*card title with icon on lef side. icon size is 128px*@
+            <h2 class="card-title">
+                <img src="@ViewData["Icon"]" class="card-img-top" alt="@ViewData["Title"]" style="width: 128px; height: 128px;">
+                @ViewData["Title"]
+            </h2>
+            <h3>JSON Minification</h3>
+
+            <p>JSON Minification is a tool that helps to make JSON (JavaScript Object Notation) code more compact by removing whitespace and other unnecessary characters.</p>
+            <h3>The conversion is performed in the browser. No data is sent to the server, so you don’t have to worry about your privacy. Check the code on GitHub.</h3>
+
+
+            <div class="form-group p-2">
+
+                <div class="g-col-12 col-xs-6 p-2">
+
+                    <label class="control-label" for="fileInput">File:</label>
+
+                    <input type="file" class="form-control" id="fileInput" accept=".json" onchange="uploadFile()">
+
+                </div>
+
+            </div>
+
+            <div class="g-col-12 col-xs-6 p-2">
+
+                <label class="control-label" for="json">or paste JSON:</label>
+
+                <textarea id="json" class="form-control" rows="12"></textarea>
+            </div>
+
+            <div class="g-col-12 col-xs-6 p-2">
+                <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="minify()">Minify</button>
+
+                <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="copyToClipboard()">Copy to Clipboard</button>
+
+                <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="download()">Download</button>
+
+            </div>
+
+            <div class="g-col-12 col-xs-6 p-2">
+
+                <label class="control-label" for="minifiedJson">Minified JSON:</label>
+
+                <textarea id="minifiedJson" class="form-control" rows="12"></textarea>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_Toast")
+
+<script>
+
+    function uploadFile() {
+
+        var file = document.getElementById("fileInput").files[0];
+
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+
+            document.getElementById("json").innerHTML = e.target.result;
+
+        };
+
+        reader.readAsText(file);
+
+    }
+
+    function minify() {
+
+        var json = document.getElementById("json").value;
+
+        var minifiedJson = JSON.stringify(JSON.parse(json));
+
+        document.getElementById("minifiedJson").value = minifiedJson;
+
+    }
+
+    function copyToClipboard() {
+
+        var minifiedJson = document.getElementById("minifiedJson").value;
+
+        navigator.clipboard.writeText(minifiedJson);
+
+        showToast("Copied to clipboard");
+
+    }
+
+    function download() {
+
+        var minifiedJson = document.getElementById("minifiedJson").value;
+
+        var blob = new Blob([minifiedJson], { type: "text/plain;charset=utf-8" });
+
+        saveAs(blob, "minifiedJson.txt");
+
+    }
+
+    function showToast(message) {
+
+        //show bootstrap toast
+
+        var toast = document.getElementById("toast");
+
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast)
+
+        //set toast message
+
+        document.getElementById("toast-body").innerHTML = message;
+
+        toastBootstrap.show();
+
+    }
+
+    function saveAs(blob, filename) {
+
+        var element = document.createElement('a');
+
+        element.setAttribute('href', window.URL.createObjectURL(blob));
+
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+
+        showToast("Downloaded");
+
+    }
+
+</script>

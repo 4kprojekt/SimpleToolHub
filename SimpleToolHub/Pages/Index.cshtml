@@ -1,0 +1,103 @@
+﻿@page
+@using SimpleToolHub.Common
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    ViewData["Description"] = "Simple Tool Hub is a collection of simple online tools that can be used for free.";
+    ViewData["Keywords"] = "online tools, free tools, simple tools, tools, free online tools, simple online tools";
+}
+
+<div class="text-center">
+    <h1 class="display-4">
+
+        Welcome to Simple Tool Hub!
+
+
+    </h1>
+
+    <p>Simple Tool Hub is a collection of simple online tools that can be used for free.</p>
+   @* visit us on github*@
+<p>Visit us on <a href="" 
+target="_blank">GitHub</a></p>
+
+</div>
+
+<div class="row">
+    @{
+        //load file  <approot>\Common\ToolsDefinition.json
+        var tools = System.IO.File.ReadAllText(@"Common/ToolsDefinition.json");
+        //deserialize json to class ToolsDefinition using system.text.json
+        var toolsDefinition = System.Text.Json.JsonSerializer.Deserialize<ToolsDefinition>(tools);
+
+        //loop through toolsDefinition.Tools and create list of links with tool name, icon, description
+        foreach (var tool in toolsDefinition.tools)
+        {
+            <div class=" col-xl-4 col-xxl-3 col-md-4 col-sm-6 p-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="@tool.icon" class="card-img-top" alt="@tool.name">
+                    <div class="card-body">
+                        <h5 class="card-title">@tool.name</h5>
+                        <p class="card-text">@tool.description</p>
+                        <a href="@tool.url" class="btn btn-primary">Go to tool</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@*  ///
+        // {
+        //     "name": "XML to JSON converter online",
+        //   "description": "Converts XML to JSON online",
+        //   "url": "/Tools/XmlToJson",
+        //   "icon": "https://www.convertcsv.com/favicon.ico"
+        //       },
+        // {
+        //     "name": "XML to CSV converter online",
+        //   "description": "Converts XML to CSV online",
+        //   "url": "/Tools/XmlToCsv",
+        //   "icon": "https://www.convertcsv.com/favicon.ico"
+        // },
+        // {
+        //     "name": "CSV to JSON converter online",
+        //   "description": "Converts CSV to JSON online",
+        //   "url": "/Tools/CsvToJson",
+        //   "icon": "https://www.convertcsv.com/favicon.ico"
+        // },
+        // {
+        //     "name": "CSV to XML converter online",
+        //   "description": "Converts CSV to XML online",
+        //   "url": "/Tools/CsvToXml",
+        //   "icon": "https://www.convertcsv.com/favicon.ico"
+        // },
+        // {
+        //     "name": "CSV to SQL converter online",
+        //   "description": "Converts CSV to SQL online",
+        //   "url": "/Tools/CsvToSql",
+        //   "icon": "https://www.convertcsv.com/favicon.ico"
+        // },
+        // {
+        //     "name": "SQL to CSV converter online",
+        //   "description": "Converts SQL to CSV online",
+        //   "url": "/Tools/SqlToCsv",
+        //   "icon": "https://www.convertcsv.com/favicon.ico"
+        // },
+        // {
+        //     "name": "SQL to JSON converter online",
+        //   "description": "Converts SQL to JSON online",
+        //   "url": "/Tools/SqlToJson",
+        //   "icon": "https://www.convertcsv.com/favicon.ico"
+        // },
+        // {
+        //     "name": "SQL to XML converter online",
+        //   "description": "Converts SQL to XML online",
+        //   "url": "/Tools/SqlToXml",
+        //   "icon": "https://www.convertcsv.com/favicon.ico"
+            // }
+        ///
+
+ *@
+
+
+

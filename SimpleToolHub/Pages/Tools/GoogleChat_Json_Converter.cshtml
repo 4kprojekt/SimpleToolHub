@@ -1,0 +1,160 @@
+﻿@page
+@using System
+
+@model SimpleToolHub.Pages.Tools.GoogleChat_Json_ConverterModel
+
+@{
+    //get date of modify of this page file
+
+
+    ViewData["Title"] = "Google Chat archive converter (json) to CSV";
+    ViewData["Description"] = "Converts Google Chat archive (json) to CSV.";
+    ViewData["Keywords"] = "Google Chat archive converter (json) to CSV, Google Chat archive converter, Google Chat archive, Google Chat, Google Chat converter, Google Chat json converter, Google Chat json to CSV, Google Chat json to CSV converter, Google Chat json to CSV online, Google Chat json to CSV tool, Google Chat json to CSV free, Google Chat json to CSV free online, Google Chat json to CSV free tool, Google Chat json to CSV free";
+    ViewData["Icon"] = "/icons/gchat.jpg";
+
+}
+<div class="col-12">
+    <div class="card">
+        
+        
+        <div class="card-body">
+          
+            @*card title with icon on lef side. icon size is 128px*@
+<h2 class="card-title">
+                <img src="@ViewData["Icon"]" class="card-img-top" alt="@ViewData["Title"]" style="width: 128px; height: 128px;">
+                @ViewData["Title"]
+</h2>
+
+
+
+
+
+            <h3>The conversion is performed in the browser. No data is sent to the server, so you don’t have to worry about your privacy. Check the code on GitHub.</h3>
+            <p>Converts Google Chat archive (json) to CSV. </p>
+            <h4>Step 1</h4>
+            <p>Download your Google Chat archive from <a href="https://takeout.google.com/settings/takeout" target="_blank">https://takeout.google.com/settings/takeout</a></p>
+            <h4>Step 2</h4>
+            <p>Unpack the file, find the messages.json file that interests you (they are located in different folders, separate for different chats.</p>
+            <h4>Step 3</h4>
+            <p>
+                Upload the file using the form below. A CSV file will be generated containing the date, username,user email, and message text. The method is compatible with the export file version as of <span class="badge badge-success">2023-12-23</span>
+            </p>
+
+            <div class="form-group p-2">
+                <div class="col-sm-6 p-2">
+                    <label class="control-label" for="fileInput">File:</label>
+                    <input type="file" class="form-control" id="fileInput" accept=".json">
+                </div>
+                <div class="col-sm-6 p-2">
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="processFile()">Process File</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">@ViewData["Title"]</strong>
+            <small>now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toast-body">
+        </div>
+    </div>
+</div>
+
+<script>
+    function convertObjectToCSV(objArray) {
+        // Ensure the input is an array of objects
+        if (!Array.isArray(objArray)) return '';
+
+        // Extract headers from the first object in the array
+        const headers = Object.keys(objArray[0]);
+
+        // Create the CSV header
+        let csvContent = headers.map(header => `"${header}"`).join(';') + '\n';
+
+        // Create rows for each object
+        for (let obj of objArray) {
+            const row = headers.map(header => {
+                let value = obj[header];
+                // Escape double quotes by replacing them with two double quotes
+                if (typeof value === 'string') {
+                    value = value.replace(/"/g, '""');
+                }
+                return `"${value}"`;
+            }).join(';');
+
+            // Add the row to CSV content
+            csvContent += row + '\n';
+        }
+
+        return csvContent;
+    }
+
+    function showTost(message) {
+        //show bootstrap toast
+        var toast = document.getElementById("toast");
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast)
+        //set toast message
+        document.getElementById("toast-body").innerHTML = message;
+        toastBootstrap.show();
+    }
+
+    function processFile() {
+        try {
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0];
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    var contents = e.target.result;
+                    //deserialize contents as json to mwssages class
+                    var messages = JSON.parse(contents);
+                    //create new array of messages
+                    var newMessages = [];
+                    //loop through messages
+                    for (var i = 0; i < messages.messages.length; i++) {
+                        //create new message
+                        var newMessage = {
+                            "created_date": messages.messages[i].created_date,
+                            "name": messages.messages[i].creator.name,
+                            "email": messages.messages[i].creator.email,
+                            "text": messages.messages[i].text
+                        };
+                        //add new message to new array
+                        newMessages.push(newMessage);
+                    }
+
+                    // return file csv
+                    var csv = convertObjectToCSV(newMessages);
+
+
+                    var hiddenElement = document.createElement('a');
+                    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+                    hiddenElement.target = '_blank';
+                    hiddenElement.download = 'messages.csv';
+                    hiddenElement.click();
+
+                    showTost("File converted successfully. Check downloads.");
+
+                }
+                catch (error) {
+                    showTost("Convert error. Check JSON format.");
+                }
+            };
+            reader.readAsText(file);
+        }
+        catch (error) {
+            showTost("Convert error. Check JSON format.");
+        }
+    }
+</script>
+
+
+@{
+}

@@ -1,0 +1,48 @@
+{
+  "tools": [
+    {
+      "name": "Google Chat archive converter (json) to CSV",
+      "description": "Converts Google Chat archive json files to CSV",
+      "url": "/Tools/GoogleChat_Json_Converter",
+      "icon": "/icons/gchat.jpg"
+    },
+    {
+      "name": "GUID generator online",
+      "description": "Generates GUIDs online",
+      "url": "/Tools/Guid_generator",
+      "icon": "/icons/guid.jpg"
+    },
+    {
+      "name": "UUID generator online",
+      "description": "Generates UUIDs online",
+      "url": "/Tools/Uuid_generator",
+      "icon": "/icons/uuid.jpg"
+    },
+    {
+
+      "name": "JSON to XML converter online",
+      "description": "Converts JSON to XML online",
+      "url": "/Tools/Json_to_XML_Converter",
+      "icon": "/icons/json2xml.jpg"
+    },
+    {
+      "name": "JSON beautifier online",
+      "description": "Beautifies JSON online",
+      "url": "/Tools/Json_Beautifier",
+      "icon": "/icons/jsonbeau.jpg"
+    },
+    {
+      "name": "JSON minifier online",
+      "description": "Minifies JSON online",
+      "url": "/Tools/Json_Minification",
+      "icon": "/icons/jsonmini.jpg"
+    },
+    {
+      "name": "Byte calculator online",
+      "description": "Calculates bytes online",
+      "url": "/Tools/Byte_calculator",
+      "icon": "/icons/bytecalc.jpg"
+    }
+
+  ]
+}

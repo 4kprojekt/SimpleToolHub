@@ -1,0 +1,195 @@
+﻿@page
+@model SimpleToolHub.Pages.Tools.JSON_to_XML_ConverterModel
+@{
+    ViewData["Title"] = "JSON to XML Converter";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>JSON to XML Converter is a tool that helps to convert JSON (JavaScript Object Notation) code to XML (Extensible Markup Language) code.</p>
+
+
+
+<div class="form-group p-2">
+
+    <div class="g-col-12 col-xs-6 p-2">
+
+        <label class="control-label" for="fileInput">File:</label>
+
+        <input type="file" class="form-control" id="fileInput" onchange="uploadFile()" accept=".json">
+
+    </div>
+
+</div>
+
+<div class="g-col-12 col-xs-6 p-2">
+
+    <label class="control-label" for="json">or paste JSON:</label>
+
+    <textarea id="json" class="form-control" rows="12"></textarea>
+
+</div>
+
+<div class="g-col-12 col-xs-6 p-2">
+
+    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="convert()">Convert</button>
+
+    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="copyToClipboard()">Copy to Clipboard</button>
+
+    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="download()">Download</button>
+
+</div>
+
+<div class="g-col-12 col-xs-6 p-2">
+
+    <label class="control-label" for="xml">XML:</label>
+
+    <textarea id="xml" class="form-control" rows="12"></textarea>
+
+</div>
+
+
+@await Html.PartialAsync("_Toast")
+
+<script>
+
+    function uploadFile() {
+
+        var file = document.getElementById("fileInput").files[0];
+
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+
+            document.getElementById("json").value = e.target.result;
+
+        };
+
+        reader.readAsText(file);
+
+    }
+
+    function convert() {
+
+        var json = document.getElementById("json").value;
+
+        //if json is empty, show toast and return
+        if (json == "") {
+
+            showToast("JSON is empty");
+
+            return;
+
+        }
+
+        try {
+            var xml = json_str2xml(json);
+        }
+        catch (e) {
+
+            document.getElementById("xml").value = "";
+            showToast("Invalid JSON");
+            return;
+        }
+        document.getElementById("xml").value = xml;
+
+        //show toast with success message
+        showToast("Converted successfully");
+
+
+
+    }
+
+    function copyToClipboard() {
+
+        var xml = document.getElementById("xml").value;
+
+        navigator.clipboard.writeText(xml);
+
+        showToast("Copied to clipboard");
+
+    }
+
+    function download() {
+
+        var xml = document.getElementById("xml").value;
+
+        var filename = "xml.xml";
+
+        var element = document.createElement('a');
+
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(xml));
+
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+
+    }
+
+    function showToast(message) {
+
+        var toast = document.getElementById("toast");
+
+        var toastBody = document.getElementById("toast-body");
+
+        toastBody.innerHTML = message;
+
+        var toast = new bootstrap.Toast(toast);
+
+        toast.show();
+
+    }
+
+    function OBJtoXML(obj) {
+        var xml = '';
+        for (var prop in obj) {
+            xml += obj[prop] instanceof Array ? '' : "<" + prop + ">";
+            if (obj[prop] instanceof Array) {
+                for (var array in obj[prop]) {
+                    xml += "<" + prop + ">";
+                    xml += OBJtoXML(new Object(obj[prop][array]));
+                    xml += "</" + prop + ">";
+                }
+            } else if (typeof obj[prop] == "object") {
+                xml += OBJtoXML(new Object(obj[prop]));
+            } else {
+                xml += obj[prop];
+            }
+            xml += obj[prop] instanceof Array ? '' : "</" + prop + ">";
+        }
+        var xml = xml.replace(/<\/?[0-9]{1,}>/g, '');
+        return xml
+    }
+  
+
+    function formatXml(xmlString) {
+        const PADDING = '  ';
+        let formatted = '';
+        let indent = '';
+
+        xmlString.split(/>\s*</).forEach(function (node) {
+            if (node.match(/^\/\w/)) indent = indent.substring(PADDING.length); // decrease indent by one 'level'
+
+            formatted += indent + '<' + node + '>\n';
+
+            if (node.match(/^<?\w[^>]*[^/]$/)) indent += PADDING; // increase indent
+        });
+
+        return formatted.substring(1, formatted.length - 3);
+    }
+
+    function json_str2xml(json) {
+        let jsonObj = JSON.parse(json);
+        return formatXml(OBJtoXML(jsonObj));
+    }
+
+</script>
+
+
+
