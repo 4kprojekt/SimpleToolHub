@@ -1,0 +1,115 @@
+﻿@page
+@model SimpleToolHub.Pages.Tools.REST_API_TesterModel
+@{
+    ViewData["Title"] = "REST API Tester online";
+    ViewData["Description"] = "REST API Tester is a tool that helps to test REST APIs.";
+    ViewData["Keywords"] = "rest api tester, rest api, rest api test, rest api test tool, rest api test tool online, rest api test tool free, rest api test tool download, rest api test tool github, rest api test tool online free, rest api test tool online free tool, rest api test tool online free download, rest api test tool online free github, rest api test tool online free github tool, rest api test tool online free github tool download, rest api test tool online free github tool download tool, rest api test tool online free github tool download tool free, rest api test tool online free github tool download tool free online, rest api test tool online free github tool download tool free online tool";
+    ViewData["Icon"] = "/icons/restapi.jpg";
+}
+
+@*form for api test. store each request in local store in browser and display list*@
+<div class="col-12">
+    <div class="card">
+
+
+        <div class="card-body">
+
+            @*card title with icon on lef side. icon size is 128px*@
+            <h2 class="card-title">
+                <img src="@ViewData["Icon"]" class="card-img-top" alt="@ViewData["Title"]" style="width: 128px; height: 128px;">
+                @ViewData["Title"]
+            </h2>
+           <p>It is a simple tool that allows you to send requests to the server and view the response. The tool is useful for testing REST APIs.</p>
+            <div class="form-group p-2">
+                <div class="col-sm-6 p-2">
+                    <label class="control-label" for="fileInput">URL:</label>
+                    <input type="text" class="form-control" id="url" value="https://jsonplaceholder.typicode.com/posts/1">
+                </div>
+              
+
+                <div class="col-sm-6 p-2">
+                    <label class="control-label" for="fileInput">Method:</label>
+                    <select class="form-control" id="method">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+
+                </div>
+
+                @*request headers form with set basic header*@
+                <div class="col-sm-6 p-2">
+                    <label class="control-label" for="request_headers">Headers:</label>
+                    <textarea class="form-control" id="request_headers" rows="3">Content-Type: application/json</textarea>
+                </div>
+
+
+
+
+
+                <div class="col-sm-6 p-2">
+                    <label class="control-label" for="fileInput">Body:</label>
+                    <textarea class="form-control" id="body" rows="3"></textarea>
+                </div>
+
+                <div class="col-sm-6 p-2">
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="sendRequest()">Send Request</button>
+                </div>
+
+            </div>
+
+            <div class="form-group p-2">
+                <div class="col-sm-6 p-2">
+                    <label class="control-label" for="fileInput">Response:</label>
+                    <textarea class="form-control" id="response" rows="10"></textarea>
+                </div>
+                <div class="col-sm-6 p-2">
+                    <label class="control-label" for="fileInput">Headers:</label>
+                    <textarea class="form-control" id="headers" rows="10"></textarea>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function sendRequest() {
+        var url = document.getElementById("url").value;
+        var method = document.getElementById("method").value;
+        var body = document.getElementById("body").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        //set headers from textarea with id headers
+        var headers = document.getElementById("request_headers").value;
+        var headersArray = headers.split("\n");
+        for (var i = 0; i < headersArray.length; i++) {
+            var header = headersArray[i];
+            var headerArray = header.split(":");
+            var headerName = headerArray[0];
+            var headerValue = headerArray[1];
+            xhr.setRequestHeader(headerName, headerValue);
+        }
+        xhr.send(body);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                document.getElementById("response").value = xhr.responseText;
+                document.getElementById("headers").value = xhr.getAllResponseHeaders();
+            }
+        }
+    }
+
+</script>
+
+
+
+
+
+
+

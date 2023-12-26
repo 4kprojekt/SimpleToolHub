@@ -1,0 +1,52 @@
+﻿@page
+@model SimpleToolHub.Pages.Tools.Base64_encoder_decoderModel
+@{
+ViewData["Title"] = "Base64 encoder/decoder online";
+    ViewData["Description"] = "Base64 encoder/decoder is a tool that helps to encode and decode base64 data.";
+    ViewData["Keywords"] = "base64 encoder decoder online, base64, base64 encode, base64 decode, base64 encode online, base64 encode tool, base64 encode free, base64 encode download, base64 encode github, base64 encode online free, base64 encode online tool, base64 encode online free tool, base64 encode online tool free, base64 encode online free download, base64 encode online free github, base64 encode online free github tool, base64 encode online free github tool download, base64 encode online free github tool download tool, base64 encode online free github tool download tool free, base64 encode online free github tool download tool free online, base64 encode online free github tool download tool free online tool";
+    ViewData["Icon"] = "/icons/base64.jpg";
+
+
+}
+
+<<div class="col-12">
+    <div class="card">
+
+
+        <div class="card-body">
+
+            @*card title with icon on lef side. icon size is 128px*@
+            <h2 class="card-title">
+                <img src="@ViewData["Icon"]" class="card-img-top" alt="@ViewData["Title"]" style="width: 128px; height: 128px;">
+                @ViewData["Title"]
+            </h2>
+
+<p>Base64 encoder/decoder is a tool that helps to encode and decode base64 data.</p>
+
+<div class="form-group p-2">
+
+                <div class="g-col-12 col-xs-6  p-2 ">
+                    <label class="control-label" for="fileInput">File:</label>
+                    <input type="file" class="form-control" id="fileInput" accept=".txt" onchange="uploadFile()">
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="encode()">Encode</button>
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="decode()">Decode</button>
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="copyToClipboard()">Copy to Clipboard</button>
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="download()">Download</button>
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Text:</label>
+                    <textarea id="text" class="form-control" rows="12"></textarea>
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="fileInput">Base64:</label>
+                    <textarea id="base64" class="form-control" rows="12"></textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>

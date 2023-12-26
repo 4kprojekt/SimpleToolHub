@@ -1,0 +1,84 @@
+﻿@page
+@model SimpleToolHub.Pages.Tools.Regex_TesterModel
+@{
+    ViewData["Title"] = "Regex Tester";
+    ViewData["Description"] = "Regex Tester is a tool that helps to test regular expressions.";
+    ViewData["Keywords"] = "regex tester, regex, regular expression, regular expression tester, regular expression test, regular expression test tool, regular expression test tool online, regular expression test tool free, regular expression test tool download, regular expression test tool github, regular expression test tool online free, regular expression test tool online free tool, regular expression test tool online free download, regular expression test tool online free github, regular expression test tool online free github tool, regular expression test tool online free github tool download, regular expression test tool online free github tool download tool, regular expression test tool online free github tool download tool free, regular expression test tool online free github tool download tool free online, regular expression test tool online free github tool download tool free online tool";
+    ViewData["Icon"] = "/icons/regex.jpg";
+}
+
+<div class="col-12">
+    <div class="card">
+
+
+        <div class="card-body">
+
+            @*card title with icon on lef side. icon size is 128px*@
+            <h2 class="card-title">
+                <img src="@ViewData["Icon"]" class="card-img-top" alt="@ViewData["Title"]" style="width: 128px; height: 128px;">
+                @ViewData["Title"]
+            </h2>
+
+            <p>Regex Tester is a tool that helps to test regular expressions.</p>
+            <p>Insert a text field that searches through text.</p>
+
+            <div class="form-group p-2">
+
+
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="text">Text:</label>
+                    <textarea id="text" class="form-control" rows="12">Insert a text field that searches through text.</textarea>
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="regex">Regex:</label>
+                    <input id="regex" class="form-control" rows="12" onkeyup="test()" value="(\btext\b)" />
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <label class="control-label" for="matches">Matches:</label>
+                    <textarea id="matches" class="form-control" rows="12"></textarea>
+                </div>
+
+                <div class="g-col-12 col-xs-6 p-2">
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="test()">Test</button>
+                    <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="copyToClipboard()">Copy to Clipboard</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@await Html.PartialAsync("_Toast")
+
+<script>
+
+
+    function test() {
+
+        document.getElementById("matches").value = "";
+
+        var text = document.getElementById("text").value;
+        var regex = document.getElementById("regex").value;
+        var matches = text.match(regex);
+        document.getElementById("matches").value = matches;
+    }
+
+    function copyToClipboard() {
+        var text = document.getElementById("matches").value;
+        navigator.clipboard.writeText(text);
+        showToast("Copied to clipboard");
+    }
+    //if document is ready without jquery
+    document.addEventListener("DOMContentLoaded", function (event) {
+        test();
+    });
+
+
+
+
+</script>

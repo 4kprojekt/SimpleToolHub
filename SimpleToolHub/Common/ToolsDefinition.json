@@ -42,6 +42,20 @@
       "description": "Calculates bytes online",
       "url": "/Tools/Byte_calculator",
       "icon": "/icons/bytecalc.jpg"
+    },
+    {
+      "name": "Regex tester online",
+      "description": "Tests regular expressions online",
+      "url": "/Tools/Regex_Tester",
+      "icon": "/icons/regex.jpg"
+
+    },
+    {
+      "name": "REST API tester online",
+      "description": "Tests REST APIs online",
+      "url": "/Tools/Rest_API_Tester",  
+"icon": "/icons/restapi.jpg"
+
     }
 
   ]

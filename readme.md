@@ -15,6 +15,8 @@ Do you have an idea for a tool? Write to us.
 - JSON Beautifier: Beautify JSON
 - JSON Minifier: Minify JSON
 - UUID Generator: Generate a UUID
+- Regex tester online
+- REST API tester online
 	 
 
 ## Installation
