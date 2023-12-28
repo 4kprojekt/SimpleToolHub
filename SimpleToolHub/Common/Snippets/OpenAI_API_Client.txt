@@ -1,0 +1,72 @@
+﻿   private async Task<Rootobject> CallAPI()
+        {
+
+            // create API key on https://platform.openai.com/api-keys
+            var api_key = "<your api key>";
+            //available models https://platform.openai.com/docs/models/
+            var model_name = "gpt-4-1106-preview";
+            //max tokens to generate
+            var max_tokens = 500;
+
+            var system_role = "system";
+            var user_message = "user";
+
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", api_key);
+            //var requestUrl = "https://api.openai.com/v1/completions";
+            var requestUrl = "https://api.openai.com/v1/chat/completions";
+
+            var requestData = new
+            {
+                model = model_name,
+                max_tokens = max_tokens,
+                messages = new[] { new { role = "system", content = system_role }, new { role = "user", content = user_message } }
+            };
+
+            var json = JsonConvert.SerializeObject(requestData);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await httpClient.PostAsync(requestUrl, content);
+
+            if (!response.IsSuccessStatusCode) throw new Exception("OpenAI API response is not success");
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            //deserilise  responseContent to Rootobject class
+            var result = JsonConvert.DeserializeObject<Rootobject>(responseContent);
+
+            //if null throw exception
+            if (result == null) throw new Exception("OpenAI API response is null");
+            return result;
+        }
+
+        //classes for deserilisation of response from OpenAI API
+        public class Rootobject
+        {
+            public string id { get; set; }
+            public string _object { get; set; }
+            public int created { get; set; }
+            public string model { get; set; }
+            public Usage usage { get; set; }
+            public Choice[] choices { get; set; }
+        }
+
+        public class Usage
+        {
+            public int prompt_tokens { get; set; }
+            public int completion_tokens { get; set; }
+            public int total_tokens { get; set; }
+        }
+
+        public class Choice
+        {
+            public Message message { get; set; }
+            public string finish_reason { get; set; }
+            public int index { get; set; }
+        }
+
+        public class Message
+        {
+            public string role { get; set; }
+            public string content { get; set; }
+        }

@@ -1,0 +1,54 @@
+﻿@page "{snippetname}"
+@model SimpleToolHub.Pages.Snippets.IndexModel
+@{
+    ViewData["Title"] = $"Code Snippet - {Model.SnippetName}";
+    ViewData["Description"] = Model.Description;
+    ViewData["Keywords"] = Model.Keywords;
+
+}
+<link href="~/highlight/styles/dark.css" rel="stylesheet" />
+<link href="~/highlight/styles/dark.min.css" rel="stylesheet" />
+
+
+
+<div class="container">
+
+    <div class="row ">
+        <div class="col-12">
+            <h2 class="card-title">
+                <img src="@Model.Icon" class="card-img-top" alt="@Model.SnippetName" style="width: 128px; height: 128px;">
+               @Model.SnippetName
+            </h2>
+            @*publication date*@
+<p>
+                <small class="text-muted">Published on <strong>@Model.PublicationDate</strong> </small>
+</p>
+        </div>
+        <div class="col-12">
+            @Html.Raw(Model.SnippetDescription)
+        </div>
+
+        @*code in text area with copy to clipboard button if snippedcode is not empty*@
+        @if (!string.IsNullOrEmpty(Model.SnippetCode))
+        {
+            <div class="col-12">
+                <pre><code class="language-csharp">@Model.SnippetCode</code></pre>
+            </div>
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+ 
+    <script src="~/highlight/highlight.js"></script>
+    <script src="~/highlight/highlight.min.js"></script>
+    <script>
+        //if doculemnt is loaded
+        document.addEventListener("DOMContentLoaded", function (event) {
+            //highlight code
+            hljs.highlightAll();
+        });
+    </script>
+
+}

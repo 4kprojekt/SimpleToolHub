@@ -7,6 +7,10 @@ Check it online at [https://simpletoolhub.site](https://simpletoolhub.site).
 
 Do you have an idea for a tool? Write to us.
 
+## Code snippets
+
+ - Understanding OpenAI API Call - A Comprehensive Guide
+
 ## Tools
 
 - Byte Converter: Convert between bytes, kilobytes, megabytes, and gigabytes etc

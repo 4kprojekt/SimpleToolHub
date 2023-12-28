@@ -1,0 +1,13 @@
+{
+  "CodeSnippets": [
+    {
+      "Name": "Understanding OpenAI API Call -  A Comprehensive Guide",
+      "Description": "Explore a detailed guide on how to integrate and utilize OpenAI's GPT-4 model in C#. Dive deep into the code explanation, setup, and response handling to harness the power of AI in your applications.",
+      "MDFile": "Common/Snippets/OpenAI_API_Client.md",
+      "CodeFile": "Common/Snippets/OpenAI_API_Client.txt",
+      "Keywords": "OpenAI API, C#, GPT-4, chat completion, HTTP client, API integration, AI in C#, code explanation, OpenAI platform",
+      "Icon": "",
+      "PublicationDate": "2023-12-28"
+    }
+  ]
+}

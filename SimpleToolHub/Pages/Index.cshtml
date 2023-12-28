@@ -7,6 +7,8 @@
     ViewData["Keywords"] = "online tools, free tools, simple tools, tools, free online tools, simple online tools";
 }
 
+
+
 <div class="text-center">
     <h1 class="display-4">
 
@@ -16,36 +18,88 @@
     </h1>
 
     <p>Simple Tool Hub is a collection of simple online tools that can be used for free.</p>
-   @* visit us on github*@
+    @* visit us on github*@
     <p>
         Visit us on <a href="https://github.com/4kprojekt/SimpleToolHub/"
-                       target="_blank">GitHub</a></p>
+                       target="_blank">GitHub</a>
+    </p>
 
 </div>
 
-<div class="row">
-    @{
-        //load file  <approot>\Common\ToolsDefinition.json
-        var tools = System.IO.File.ReadAllText(@"Common/ToolsDefinition.json");
-        //deserialize json to class ToolsDefinition using system.text.json
-        var toolsDefinition = System.Text.Json.JsonSerializer.Deserialize<ToolsDefinition>(tools);
 
-        //loop through toolsDefinition.Tools and create list of links with tool name, icon, description
-        foreach (var tool in toolsDefinition.tools)
-        {
-            <div class=" col-xl-4 col-xxl-3 col-md-4 col-sm-6 p-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="@tool.icon" class="card-img-top" alt="@tool.name">
-                    <div class="card-body">
-                        <h5 class="card-title">@tool.name</h5>
-                        <p class="card-text">@tool.description</p>
-                        <a href="@tool.url" class="btn btn-primary">Go to tool</a>
+<div class="container text-center">
+    <h2>Code Snippets</h2>
+    <div class="row ">
+        @{
+            //read codesnippets from file <approot>\Common\CodeSnippets.json
+            var codeSnippets = System.IO.File.ReadAllText(@"Common/CodeSnippetsDefinition.json");
+            //deserialize json to class CodeSnippets using system.text.json
+            var codeSnippetsDefinition = System.Text.Json.JsonSerializer.Deserialize<CodeSnippetsDefinition>(codeSnippets);
+
+            //loop through codeSnippetsDefinition.CodeSnippets and create list of links with snippet name, icon
+            foreach (var codeSnippet in codeSnippetsDefinition.CodeSnippets)
+            {
+                <div class=" col-xl-4 col-xxl-3 col-md-6 col-sm-6 p-4 mx-auto">
+                    <div class="card" style="width: 18rem;">
+                        @*show icon, if is epmty show default*@
+                        @if (codeSnippet.Icon != "")
+                        {
+                            <img src="@codeSnippet.Icon" class="card-img-top" alt="@codeSnippet.Name">
+                        }
+                        else
+                        {
+                            <img src="/icons/snippet.jpg" class="card-img-top" alt="@codeSnippet.Name">
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@codeSnippet.Name</h5>
+                            <small>@codeSnippet.PublicationDate</small>
+                            @*first 10 words of descriptions*@
+                            <p class="card-text">@codeSnippet.Description.Split(' ').Take(10).Aggregate((i, j) => i + " " + j)</p>
+                            @*url to snippet. url based on snippet name converted to url*@
+                            <a href="/Snippets/@codeSnippet.Name" class="btn btn-primary"> Open </a>
+
+
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
+
+
+
         }
-    }
+    </div>
 </div>
+
+
+
+<div class="container text-center">
+<h2>Tools</h2>
+    <div class="row ">
+        @{
+            //load file  <approot>\Common\ToolsDefinition.json
+            var tools = System.IO.File.ReadAllText(@"Common/ToolsDefinition.json");
+            //deserialize json to class ToolsDefinition using system.text.json
+            var toolsDefinition = System.Text.Json.JsonSerializer.Deserialize<ToolsDefinition>(tools);
+
+            //loop through toolsDefinition.Tools and create list of links with tool name, icon, description
+            foreach (var tool in toolsDefinition.tools)
+            {
+                <div class=" col-xl-4 col-xxl-3 col-md-6 col-sm-6 p-4 mx-auto">
+                    <div class="card" style="width: 18rem;">
+                        <img src="@tool.icon" class="card-img-top" alt="@tool.name">
+                        <div class="card-body">
+                            <h5 class="card-title">@tool.name</h5>
+                            <p class="card-text">@tool.description</p>
+                            <a href="@tool.url" class="btn btn-primary">Go to tool</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+</div>
+
 
 @*  ///
         // {

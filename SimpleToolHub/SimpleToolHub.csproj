@@ -13,6 +13,16 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
+    <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.15.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Common\Snippets\OpenAI_API_Client.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Common\Snippets\OpenAI_API_Client.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
  
 </Project>
